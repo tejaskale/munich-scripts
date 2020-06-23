@@ -12,7 +12,18 @@ Available departments are:
 - [Versicherungsamt](https://www.muenchen.de/rathaus/Stadtverwaltung/Kreisverwaltungsreferat/Versicherungsamt.html) (Pension-related stuff, i.e. getting information about your contribution, necessary for NE)
 
 
-Please note the script **does not perform appointment booking** (see [#4](https://github.com/okainov/munich-scripts/issues/4)), it just tells you current status and allows you to subscribe to a notifier for one week.
+Currently the script is setup up to check indefinitely for available appointments every 10 minutes.
+
+## Notifications
+
+`termin_api.py` can use [SimplePush](https://simplepush.io/) to send notifications. Usually the 7 day trial period is enough to get an appointment.
+
+1. Download the app.
+2. Copy the code shown in the app to `termin_api.py` (Change `HuxgBB` to your code)
+	-`send("HuxgBB", "Appointments Available", a, len(a))`
+3. `python3 termin_api.py`
+
+
 
 ## Telegram bot
 
