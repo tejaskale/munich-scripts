@@ -1,8 +1,9 @@
 import datetime
-
+import time
 import requests
 import re
 import json
+from simplepush import send, send_encrypted
 
 
 class Meta(type):
@@ -344,8 +345,22 @@ def get_termins(buro, termin_type):
 
 
 if __name__ == '__main__':
-    # Example for exchanging driver license
-    appointments = get_termins(DMV, 'FS Umschreibung Ausländischer FS')
+
+    while(True):
+        # Example for exchanging driver license
+        appointments = get_termins(DMV, 'FS Umschreibung Ausländischer FS')
+        if appointments:
+            t = time.localtime()
+            current_time = time.strftime("%H:%M:%S", t)
+            print(current_time)
+            apps = appointments["Termin FS Allgemeinschalter_G"]['appoints'].values()
+            for a in apps:
+                if a:
+                    # Replace the first param with the key you get on your app.
+                    # https://simplepush.io/
+                    send("HuxgBB", "Appointments Available", a, len(a))
+            print(json.dumps(appointments, sort_keys=True, indent=4, separators=(',', ': ')))
+        time.sleep(600)
 
     # # Example for Anmeldung
     # appointments = get_termins(CityHall, 'An- oder Ummeldung - Einzelperson')
@@ -356,5 +371,3 @@ if __name__ == '__main__':
     # # Example for KFZ and car registration
     # appointments = get_termins(KFZ, 'ZUL Fabrikneues Fahrzeug')
 
-    if appointments:
-        print(json.dumps(appointments, sort_keys=True, indent=4, separators=(',', ': ')))
